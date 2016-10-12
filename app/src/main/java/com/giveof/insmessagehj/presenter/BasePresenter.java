@@ -1,4 +1,4 @@
-package com.giveof.insmessagehj.app;
+package com.giveof.insmessagehj.presenter;
 
 import com.giveof.insmessagehj.entity.BaseEntity;
 

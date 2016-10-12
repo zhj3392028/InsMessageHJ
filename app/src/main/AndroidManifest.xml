@@ -27,7 +27,12 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.SmsActivity"></activity>
+        <activity android:name=".activity.SmsActivity" />
+
+        <receiver
+            android:name=".receiver.MsgReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

@@ -1,7 +1,9 @@
 package com.giveof.insmessagehj.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import com.giveof.insmessagehj.R;
 import com.giveof.insmessagehj.adapter.IMainAdapter;
 import com.giveof.insmessagehj.entity.Contract;
+import com.giveof.insmessagehj.receiver.MsgReceiver;
+import com.giveof.insmessagehj.receiver.PushReceiver;
 import com.giveof.insmessagehj.viewUtil.PopDialogView;
 import com.kogitune.activity_transition.ActivityTransitionLauncher;
 
@@ -39,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
     private IMainAdapter adapter;
     private LinearLayoutManager linear;
     private boolean onPress;
-
+    private PushReceiver receiver;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         recyclerView.setVisibility(View.VISIBLE);
@@ -65,18 +70,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse("tel:" + ""));
-//                if (intent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(intent);
-//                }
-
                 Intent in = new Intent(MainActivity.this, SmsActivity.class);
                 ActivityTransitionLauncher.with(MainActivity.this).from(view).launch(in);
             }
         });
-
         initData();
+        initReceiver();
         linear = new LinearLayoutManager(MainActivity.this) {
             @Override
             public boolean canScrollVertically() {
@@ -89,6 +88,24 @@ public class MainActivity extends AppCompatActivity {
         adapter.getData(mData);
         adapter.setItemViewType(0);
         recyclerView.setAdapter(adapter);
+    }
+
+
+    private void initReceiver() {
+        receiver = new PushReceiver(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                super.onReceive(context, intent);
+                if (MsgReceiver.ACTION.equals(intent.getAction())) {
+                    String response = intent.getStringExtra(MsgReceiver.DATA);
+                    toolbar.setTitle(response);
+
+                }
+            }
+        };
+
+        IntentFilter filter = new IntentFilter(MsgReceiver.ACTION);
+        registerReceiver(receiver,filter);
     }
 
     private void initData() {
@@ -177,5 +194,11 @@ public class MainActivity extends AppCompatActivity {
         myAnimation_Translate.setInterpolator(AnimationUtils
                 .loadInterpolator(MainActivity.this,
                         android.R.anim.accelerate_decelerate_interpolator));
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 }

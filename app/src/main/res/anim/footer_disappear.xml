@@ -1,0 +1,18 @@
+<set xmlns:android="schemas.android.com/apk/res/android">
+
+    <translate
+
+        android:duration="300"
+
+        android:fromYDelta="0"
+
+        android:toYDelta="+10%p" />
+
+</set>
+
+    <!--复制代码-->
+    <!--1.popMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.footer_appear));-->
+
+    <!--2.popMenu.startAnimation(AnimationUtils.loadAnimation(this, R.anim.footer_disappear));-->
+
+    <!--3.//popMenu是自定义的界面-->
