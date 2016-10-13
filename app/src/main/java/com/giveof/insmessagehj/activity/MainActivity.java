@@ -1,10 +1,14 @@
 package com.giveof.insmessagehj.activity;
 
 
+import android.app.IntentService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,12 +23,11 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.giveof.insmessagehj.R;
 import com.giveof.insmessagehj.adapter.IMainAdapter;
 import com.giveof.insmessagehj.entity.Contract;
 import com.giveof.insmessagehj.receiver.MsgReceiver;
-import com.giveof.insmessagehj.receiver.PushReceiver;
+import com.giveof.insmessagehj.service.InsMsgService;
 import com.giveof.insmessagehj.viewUtil.PopDialogView;
 import com.kogitune.activity_transition.ActivityTransitionLauncher;
 
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private IMainAdapter adapter;
     private LinearLayoutManager linear;
     private boolean onPress;
-    private PushReceiver receiver;
+    private MsgReceiver receiver;
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +93,22 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    InsMsgService insMsgService;
+    public ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            insMsgService = ((InsMsgService.InterBinder)iBinder).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            insMsgService = null;
+        }
+    };
+
 
     private void initReceiver() {
-        receiver = new PushReceiver(){
+        receiver = new MsgReceiver(){
             @Override
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);

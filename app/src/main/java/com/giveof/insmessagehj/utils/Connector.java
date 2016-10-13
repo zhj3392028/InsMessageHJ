@@ -1,5 +1,6 @@
 package com.giveof.insmessagehj.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +19,8 @@ public class Connector {
     private int dstPort = 8000;
     private Socket mClientSocket;
     private ConnectorListener mConnectorListener;
-
+    InputStream is;
+    byte[] buffer;
     //队列
     private ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<String>(8);
 
@@ -36,8 +38,8 @@ public class Connector {
                 @Override
                 public void run() {
                     try {
-                        InputStream is = mClientSocket.getInputStream();
-                        byte[] buffer = new byte[1024];
+                        is = mClientSocket.getInputStream();
+                        buffer = new byte[1024];
                         int len = -1;
                         while ((len = is.read(buffer)) != -1) {
                             final String text = new String(buffer, 0, len);
@@ -117,6 +119,31 @@ public class Connector {
             }
         }
     }
-
+    /**
+     * 循环，接收服务端数据
+     */
+    public void receiveData(){
+        try {
+        while (true){
+                Thread.sleep(500);
+            if (mClientSocket != null && !mClientSocket.isConnected()) {
+                if (mClientSocket.isConnected()) {
+                    if (mClientSocket.isInputShutdown()) {
+                        String content;
+                        int len = -1;
+                        if ((len=is.read(buffer))!=-1){
+                            String str = new String(buffer,0,len);
+                            mConnectorListener.putData(str);
+                        }
+                    }
+                }
+            }
+            }
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
