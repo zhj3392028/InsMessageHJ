@@ -5,11 +5,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+
+import com.giveof.insmessagehj.base.BaseService;
 import com.giveof.insmessagehj.conn.ConnManager;
 import com.giveof.insmessagehj.receiver.MsgReceiver;
 import com.giveof.insmessagehj.utils.Connector;
 
-public class InsMsgService extends Service implements Connector.ConnectorListener{
+public class InsMsgService extends BaseService implements Connector.ConnectorListener{
 
     private ConnManager connManager;
     private Binder binder;
@@ -44,7 +46,7 @@ public class InsMsgService extends Service implements Connector.ConnectorListene
             @Override
             public void run() {
                 connManager = ConnManager.getInstance();
-                connManager.connect("#A ");
+                connManager.connect("#Application ");
             }
         }).start();
     }

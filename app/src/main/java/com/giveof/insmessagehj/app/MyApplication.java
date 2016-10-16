@@ -1,6 +1,8 @@
 package com.giveof.insmessagehj.app;
 
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import com.giveof.insmessagehj.service.InsMsgService;
@@ -29,4 +31,5 @@ public class MyApplication extends Application {
         intent.setClass(this, InsMsgService.class);
         startService(intent);
     }
+
 }

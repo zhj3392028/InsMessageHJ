@@ -13,6 +13,7 @@ public class SmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ActivityTransition.with(getIntent()).to(findViewById(R.id.card)).start(savedInstanceState);
         exitTransition = ActivityTransition.with(getIntent()).to(findViewById(R.id.card)).start(savedInstanceState);
     }

@@ -36,7 +36,7 @@ public class ConnManager implements Connector.ConnectorListener{
         connector = new Connector();
         connector.setConnectorListener(this);
         connector.connect();
-        //connector.auth(auth);
+        connector.auth(auth);
 
     }
 
