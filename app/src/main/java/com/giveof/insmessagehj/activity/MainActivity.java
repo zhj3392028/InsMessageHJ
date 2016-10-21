@@ -28,6 +28,7 @@ import com.giveof.insmessagehj.adapter.IMainAdapter;
 import com.giveof.insmessagehj.entity.Contract;
 import com.giveof.insmessagehj.receiver.MsgReceiver;
 import com.giveof.insmessagehj.service.InsMsgService;
+import com.giveof.insmessagehj.test.TestActivity;
 import com.giveof.insmessagehj.viewUtil.PopDialogView;
 import com.kogitune.activity_transition.ActivityTransitionLauncher;
 
@@ -151,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_test) {
+            startActivity(new Intent(MainActivity.this, TestActivity.class));
         }
         if (id == R.id.action_call) {
             diaView = new PopDialogView(MainActivity.this);

@@ -72,4 +72,31 @@
         android:layout_alignLeft="@+id/btn_open"
         android:layout_alignStart="@+id/btn_open" />
 
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_close"
+        android:layout_alignStart="@+id/btn_close"
+        android:layout_marginTop="31dp"
+        android:id="@+id/button2" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:layout_alignStart="@+id/button2"
+        android:layout_marginTop="38dp"
+        android:id="@+id/button3" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button3"
+        android:layout_alignStart="@+id/button3"
+        android:layout_marginTop="14dp"
+        android:id="@+id/button4" />
+
 </RelativeLayout>

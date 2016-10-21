@@ -93,5 +93,6 @@
     <string name="action_close">断开连接</string>
     <string name="action_about">关于我们</string>
     <string name="menu_search">搜索</string>
+    <string name="menu_test">测试</string>
     <string name="menu_notifications">关于我们</string>
 </resources>
