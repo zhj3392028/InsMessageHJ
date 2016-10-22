@@ -6,8 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giveof.insmessagehj.R;
+import com.giveof.insmessagehj.callback.ConnCallback;
+import com.giveof.insmessagehj.conn.ConnManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,7 +20,6 @@ import butterknife.ButterKnife;
  */
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener {
-
 
     @Bind(R.id.editText4)
     EditText editText4;
@@ -30,12 +32,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.receive)
     TextView receive;
 
+    private ConnManager conn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
         initEvent();
+        conn = ConnManager.getInstance();
     }
 
     private void initEvent() {
@@ -46,6 +51,41 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_open:
 
+                conn.connect("", new ConnCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(TestActivity.this, "通信已打开", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(TestActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                break;
+            case R.id.btn_close:
+                conn.disConnect(new ConnCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(TestActivity.this, "通信已关闭", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(TestActivity.this, "关闭失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                break;
+            case R.id.btn_send:
+                Toast.makeText(TestActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }

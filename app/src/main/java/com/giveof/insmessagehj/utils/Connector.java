@@ -1,5 +1,7 @@
 package com.giveof.insmessagehj.utils;
 
+import com.giveof.insmessagehj.callback.ConnCallback;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,15 @@ public class Connector {
     /**
      * 使用三次握手实现长连接。关闭连接需要4次握手
      */
-    public void connect() {
+    public void connect(ConnCallback callback) {
         try {
             if (mClientSocket == null || mClientSocket.isClosed()) {
                 mClientSocket = new Socket(dstName, dstPort);
+            }
+            if (mClientSocket.isConnected()) {
+                callback.onSuccess();
+            }else {
+                callback.onError();
             }
             //发送信息给服务器
             new Thread(new RequestWorker()).start();
@@ -81,10 +88,15 @@ public class Connector {
         }
     }
 
-    public void disconnect() {
+    public void disconnect(ConnCallback callback) {
         if (mClientSocket != null && !mClientSocket.isClosed()) {
             try {
                 mClientSocket.close();
+                if (mClientSocket.isClosed()) {
+                    callback.onSuccess();
+                }else {
+                    callback.onError();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

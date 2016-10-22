@@ -1,5 +1,6 @@
 package com.giveof.insmessagehj.conn;
 
+import com.giveof.insmessagehj.callback.ConnCallback;
 import com.giveof.insmessagehj.utils.Connector;
 
 import java.lang.reflect.AccessibleObject;
@@ -22,7 +23,7 @@ public class ConnManager implements Connector.ConnectorListener{
         return INSTANCE;
     }
 
-    private ConnManager() {  //AccessibleObject.setAccessible();通过放射可以调用私有构造器，解决方法第二次实例的时候抛出异常即可！
+    private ConnManager() {  //AccessibleObject.setAccessible();通过反射可以调用私有构造器，解决方法第二次实例的时候抛出异常即可！
 
     }
 
@@ -32,12 +33,16 @@ public class ConnManager implements Connector.ConnectorListener{
      * @param auth
      *
      */
-    public void connect(String auth){
+    public void connect(String auth, ConnCallback callback){
         connector = new Connector();
         connector.setConnectorListener(this);
-        connector.connect();
+        connector.connect(callback);
         connector.auth(auth);
 
+    }
+
+    public void disConnect(ConnCallback callback){
+        connector.disconnect(callback);
     }
 
     public void putRequest(String request) {
